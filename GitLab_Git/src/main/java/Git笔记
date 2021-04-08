@@ -19,9 +19,21 @@ git reset --mixed a0ad782  工作区不动，暂存区和本地库重置
 git reset --soft  a0ad782  工作区、暂存区不动，只有本地库重置
 注意：--hard常用，可根据此命令找回删除的文件
 
-git diff test2.txt 工作区和暂存区的文件比对 的
+git diff test2.txt 工作区和暂存区的文件比对
+git diff 60d75b7 test2.txt  本地库和暂存区的对比
+git diff c2867bc 4155dbd   本地库比较
 
-a
+———————————————————分支————————————————
+git branch -v  展示所有的分支
+
+git branch branch01  创建新的分支
+
+git checkout baranch01 切换到01的分支上
+
+
+
+
+
 
 
 
