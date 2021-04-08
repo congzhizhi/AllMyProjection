@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GitLab_Git/GitLab_Git.iml" filepath="$PROJECT_DIR$/GitLab_Git/GitLab_Git.iml" />
       <module fileurl="file://$PROJECT_DIR$/算法/算法.iml" filepath="$PROJECT_DIR$/算法/算法.iml" />
     </modules>
   </component>

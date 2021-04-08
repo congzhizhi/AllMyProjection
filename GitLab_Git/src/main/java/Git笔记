@@ -1,0 +1,14 @@
+git config --global user.name "congzhizhi"　　　设置全局用户名
+
+git config --global user.email "congzhizhi@163.com"　设置邮箱
+
+git init  本地仓库初始化
+
+git add cong.txt 放到暂存区
+
+git commit cong.txt -m 'commet' 放到本地库
+
+git status  查看工作区和暂存区的状态
+
+git log 查看历史提交日志
+

@@ -1,0 +1,169 @@
+基于docker搭建gitlab   ：　　　https://cloud.tencent.com/developer/article/1680372
+
+ 菜单腾讯云
+腾讯云首页
+备案控制台
+云+社区
+专栏视频精选问答沙龙团队主页开发者手册智能钛AITVP
+找文章 / 找答案 / 找技术大牛
+创作
+提问登录注册
+py3study
+11.9K 篇文章 基于docker搭建gitlab	转到我的清单
+专栏首页python3基于docker搭建gitlab
+4
+1
+
+
+基于docker搭建gitlab
+2020-08-17阅读 2270
+一、概述
+GitLab是一个利用 Ruby on Rails 开发的开源应用程序，实现一个自托管的Git项目仓库，可通过Web界面进行访问公开的或者私人项目。
+
+它拥有与Github类似的功能，能够浏览源代码，管理缺陷和注释。可以管理团队对仓库的访问，它非常易于浏览提交过的版本并提供一个文件历史库。它还提供一个代码片段收集功能可以轻松实现代码复用，便于日后有需要的时候进行查找。
+
+
+二、搭建
+环境说明
+操作系统：centos 7.6
+
+docker版本：19.03.12
+
+ip地址：192.168.31.145
+
+配置：2核4g
+
+拉取镜像
+docker pull gitlab/gitlab-ce
+运行
+mkdir -p /data/gitlab/
+docker run -d \
+  --restart=always \
+  --name=gitlab-ce \
+  -p 8443:443 -p 8090:80 -p 8022:22 \
+  -v /data/gitlab/config:/etc/gitlab \
+  -v /data/gitlab/logs:/var/log/gitlab \
+  -v /data/gitlab/data:/var/opt/gitlab \
+  gitlab/gitlab-ce
+查看日志
+
+docker logs -f gitlab-ce
+等待10分钟，输入如下：
+
+...
+2020-07-23_06:03:55.07085 t=2020-07-23T06:03:55+0000 lvl=info msg="Starting DB migration" logger=migrator
+2020-07-23_06:03:55.07856 t=2020-07-23T06:03:55+0000 lvl=info msg="Starting plugin search" logger=plugins
+2020-07-23_06:03:55.11010 t=2020-07-23T06:03:55+0000 lvl=info msg="HTTP Server Listen" logger=http.server address=127.0.0.1:3000 protocol=http subUrl=/-/gra
+出现以上信息，表示启动成功了。
+
+三、配置文件
+修改ip和端口
+cd /data/gitlab/config
+cp gitlab.rb gitlab.rb.bak
+vi gitlab.rb
+将
+
+# external_url 'GENERATED_EXTERNAL_URL'
+修改为：
+
+external_url 'http://gitlab.aliyun.com'
+注意：这里表示gitlab的访问url，如果需要域名访问，这里必须指定为域名才行。
+
+将
+
+# gitlab_rails['gitlab_ssh_host'] = 'ssh.host_example.com'
+修改为：
+
+gitlab_rails['gitlab_ssh_host'] = 'gitlab.aliyun.com'
+注意：这里表示gitlab的ssh访问地址
+
+将
+
+# gitlab_rails['gitlab_shell_ssh_port'] = 22
+修改为：
+
+gitlab_rails['gitlab_shell_ssh_port'] = 8022
+注意：这里表示gitlab的ssh端口
+
+修改邮箱
+将
+
+# gitlab_rails['smtp_enable'] = true
+# gitlab_rails['smtp_address'] = "smtp.server"
+# gitlab_rails['smtp_port'] = 465
+# gitlab_rails['smtp_user_name'] = "smtp user"
+# gitlab_rails['smtp_password'] = "smtp password"
+# gitlab_rails['smtp_domain'] = "example.com"
+# gitlab_rails['smtp_authentication'] = "login"
+# gitlab_rails['smtp_enable_starttls_auto'] = true
+# gitlab_rails['smtp_tls'] = false
+修改为：
+
+gitlab_rails['smtp_enable'] = true
+gitlab_rails['smtp_address'] = "smtp.163.com"
+gitlab_rails['smtp_port'] = 465
+gitlab_rails['smtp_user_name'] = "aliyun@163.com"
+gitlab_rails['smtp_password'] = "123456"
+gitlab_rails['smtp_domain'] = "163.com"
+gitlab_rails['smtp_authentication'] = "login"
+gitlab_rails['smtp_enable_starttls_auto'] = true
+gitlab_rails['smtp_tls'] = true
+注意：请根据实际情况填写。
+
+将
+
+# gitlab_rails['gitlab_email_from'] = 'example@example.com'
+修改为：
+
+gitlab_rails['gitlab_email_from'] = 'aliyun@163.com'
+注意：这里表示gitlab的发件人地址
+
+重启gitlab
+docker exec -it gitlab-ce gitlab-ctl reconfigure
+docker restart gitlab-ce
+四、nginx发布gitlab
+安装nginx
+yum install -y nginx
+mkdir -p /data/log/nginx
+nginx
+配置文件
+vi /etc/nginx/conf.d/gitlab.aliyun.com.conf
+内容如下：
+
+server {
+ listen 80;
+ server_name gitlab.aliyun.com;
+ charset utf-8;
+ access_log /data/log/nginx/gitlab.aliyun.com.access.log main;
+ error_log /data/log/nginx/gitlab.aliyun.com.error.log;
+ client_max_body_size 3072m;
+ location / {
+   index index.html index.htm;
+   proxy_pass http://192.168.31.145:8090;
+   proxy_set_header           Host $host;
+   proxy_set_header           X-Real-IP $remote_addr;
+   proxy_set_header           X-Forwarded-For $proxy_add_x_forwarded_for;
+ }
+}
+注意：请根据实际情况填写。
+
+重新加载配置
+
+nginx -s reload
+访问页面
+http://gitlab.aliyun.com
+输入新的密码，比如：abcd@1234
+
+重新登录页面，用户名：root，密码就是刚才修改的。
+
+
+效果如下：
+
+
+五、切换中文
+gitlab 官方已经开始支持多语言，中文设置方法： 依次点击工具栏最右侧用户头像—>Settings—>Preferred—>Localization
+点击Language下面的选择框，选择中文
+
+
+刷新页面，效果如下：
+

@@ -6,8 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="设计模式" />
         <module name="算法" />
+        <module name="设计模式" />
+        <module name="GitLab_Git" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
