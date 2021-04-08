@@ -10,5 +10,19 @@ git commit cong.txt -m 'commet' 放到本地库
 
 git status  查看工作区和暂存区的状态
 
-git log 查看历史提交日志
+git log 查看历史提交日志，从近至远
+git log --pretty=oneline 漂亮的输出
+git reflog  显示日志，带版本号
+
+git reset --hard  a0ad782  回退到指定的版本号a0ad782，版本号从上面的git reflog获取,随便前进与后退。注意：暂存区、工作区、本地库同时重置
+git reset --mixed a0ad782  工作区不动，暂存区和本地库重置
+git reset --soft  a0ad782  工作区、暂存区不动，只有本地库重置
+注意：--hard常用，可根据此命令找回删除的文件
+
+git diff test2.txt 工作区和暂存区的文件比对 的
+
+a
+
+
+
 
