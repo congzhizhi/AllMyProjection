@@ -11,6 +11,7 @@
         <module>算法</module>
         <module>设计模式</module>
         <module>GitLab_Git</module>
+        <module>docker</module>
     </modules>
 
     <packaging>pom</packaging>

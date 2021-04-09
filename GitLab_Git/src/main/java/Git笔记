@@ -30,8 +30,7 @@ git branch branch01  创建新的分支
 
 git checkout baranch01 切换到01的分支上
 
-
-
+git merge branch01 合并分支
 
 
 
