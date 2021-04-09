@@ -10,6 +10,7 @@
         <module name="算法" />
         <module name="设计模式" />
         <module name="GitLab_Git" />
+        <module name="CICD" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

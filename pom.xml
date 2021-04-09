@@ -12,6 +12,7 @@
         <module>设计模式</module>
         <module>GitLab_Git</module>
         <module>docker</module>
+        <module>CICD</module>
     </modules>
 
     <packaging>pom</packaging>
